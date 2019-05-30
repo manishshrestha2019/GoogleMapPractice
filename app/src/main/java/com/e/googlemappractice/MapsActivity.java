@@ -52,62 +52,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        List<LatitudeLongitude> latlngs=new ArrayList<>();
 
+        latlngs.add(new LatitudeLongitude(27.7060033,85.3296575,"Softwarica College of IT and E-Commerce, Block E"));
+        latlngs.add(new LatitudeLongitude(27.705502,85.329994,"Softwarica Canteen"));
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        CameraUpdate center,zoom;
+        for (int i=0; i<latlngs.size();i++){
+            center=CameraUpdateFactory.newLatLng(new LatLng(latlngs.get(i).getLat(),
+                    latlngs.get(i).getLon()));
+
+            zoom=CameraUpdateFactory.zoomTo(16);
+            mMap.addMarker(new MarkerOptions().position(
+                    new LatLng(latlngs.get(i).getLat(),latlngs.get(i).getLon())).title(latlngs.get(i).getMarker()));
+
+            mMap.moveCamera(center);
+            mMap.moveCamera(zoom);
+            mMap.getUiSettings().setZoomControlsEnabled(true);
+
         }
-        fusedLocationProviderClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-
-                            new LatitudeLongitude(location.getLatitude(),location.getLongitude(),"");
-                            CameraUpdate center,zoom;
-                                for (int i=0; i<location.size();i++){
-                                    center=CameraUpdateFactory.newLatLng(new LatLng(latlngs.get(i).getLat(),
-                                            latlngs.get(i).getLon()));
-
-                                    zoom=CameraUpdateFactory.zoomTo(16);
-                                    mMap.addMarker(new MarkerOptions().position(
-                                            new LatLng(latlngs.get(i).getLat(),latlngs.get(i).getLon())).title(latlngs.get(i).getMarker()));
-
-                                    mMap.moveCamera(center);
-                                    mMap.moveCamera(zoom);
-                                    mMap.getUiSettings().setZoomControlsEnabled(true);
-
-                        }
-                    }
-                });
-
-//        List<LatitudeLongitude> latlngs=new ArrayList<>();
-//
-//        latlngs.add(new LatitudeLongitude(27.7060033,85.3296575,"Softwarica College of IT and E-Commerce, Block E"));
-//        latlngs.add(new LatitudeLongitude(27.705502,85.329994,"Softwarica Canteen"));
-//
-//        CameraUpdate center,zoom;
-//        for (int i=0; i<latlngs.size();i++){
-//            center=CameraUpdateFactory.newLatLng(new LatLng(latlngs.get(i).getLat(),
-//                    latlngs.get(i).getLon()));
-//
-//            zoom=CameraUpdateFactory.zoomTo(16);
-//            mMap.addMarker(new MarkerOptions().position(
-//                    new LatLng(latlngs.get(i).getLat(),latlngs.get(i).getLon())).title(latlngs.get(i).getMarker()));
-//
-//            mMap.moveCamera(center);
-//            mMap.moveCamera(zoom);
-//            mMap.getUiSettings().setZoomControlsEnabled(true);
-//
-//        }
     }
 
 }
